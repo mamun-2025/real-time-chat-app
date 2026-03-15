@@ -155,18 +155,19 @@ python manage.py migrate
 python manage.py runserver
 
 Status: ✅ Completed
-```
----
 
-# ⏳ Step 2: Authentication System
+# ⏳ Step 2: Authentication System & TailwindCSS
 
 Implemented Features:
 - User Signup
 - User Login
 - User Logout
-- Authentication Templates
+- TailwindCSS Setup
+- Templates(base.html, login.html, signup.html)
 
-Status: ⏳ In Progress
+Status: ✅ Completed
+```
+---
 
 # ⏳ Step 3: Chat Models
 
@@ -180,7 +181,7 @@ Example Models:
 - Room
 - Message
 
-Status: ⏳ Planned
+Status: ⏳ In Progress
 
 # ⏳ Step 4: Chat UI
 

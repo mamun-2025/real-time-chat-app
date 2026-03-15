@@ -1,0 +1,25 @@
+{
+  "name": "django-chat-app",
+  "version": "1.0.0",
+  "description": "A modern Real-Time Chat Application built with Django.",
+  "main": "index.js",
+  "scripts": {
+    "dev": "tailwindcss -i ./chat/static/css/input.css -o ./chat/static/css/output.css --watch"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mamun-2025/real-time-chat-app.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/mamun-2025/real-time-chat-app/issues"
+  },
+  "homepage": "https://github.com/mamun-2025/real-time-chat-app#readme",
+  "devDependencies": {
+    "@tailwindcss/cli": "^4.2.1",
+    "tailwindcss": "^4.2.1"
+  }
+}

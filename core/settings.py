@@ -107,3 +107,10 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/6.0/howto/static-files/
 
 STATIC_URL = 'static/'
+
+
+# Login and logout settings 
+LOGIN_URL = 'login'
+LOGIN_REDIRECT_URL = '/chat/'
+LOGOUT_REDIRECT_URL = 'login'
+
