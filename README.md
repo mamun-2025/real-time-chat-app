@@ -166,8 +166,6 @@ Implemented Features:
 - Templates(base.html, login.html, signup.html)
 
 Status: ✅ Completed
-```
----
 
 # ⏳ Step 3: Chat Models
 
@@ -181,7 +179,9 @@ Example Models:
 - Room
 - Message
 
-Status: ⏳ In Progress
+Status: ✅ Completed
+```
+---
 
 # ⏳ Step 4: Chat UI
 
@@ -191,7 +191,8 @@ Implemented Features:
 - Send Message Button
 - Chat Window Layout
 
-Status: ⏳ Planned
+Status: ⏳ In Progress
+
 
 # ⏳ Step 5: Real-Time Chat (WebSocket)
 
