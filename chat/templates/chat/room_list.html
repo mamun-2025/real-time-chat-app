@@ -1,0 +1,25 @@
+
+
+{% extends "base.html" %}
+{% block title %}Room List{% endblock %}
+
+{% block content %}
+
+<div class="max-w-2xl ms-auto bg-white shadow rounded">
+   <h2 class="text-2xl font-bold text-gray-300 mb-4">
+      Available Chat Rooms 
+   </h2>
+   <ul class="space-y-3">
+      {% for room in rooms %}
+      <li class="border p-3 rounded flex justify-between">
+         <span>{{ room.name }}</span>
+         <a href="{% url 'chat_room' room.name %}"
+         class="bg-blue-500 text-white px-3 py-1 rounded">
+         Join {{ room.name }}</a>
+      </li>
+      {% empty %}
+      <p class="text-gray-500">No chat rooms available.</p>
+      {% endfor %}
+   </ul>
+</div>
+{% endblock %}

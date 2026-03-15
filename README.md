@@ -180,8 +180,6 @@ Example Models:
 - Message
 
 Status: ✅ Completed
-```
----
 
 # ⏳ Step 4: Chat UI
 
@@ -191,12 +189,13 @@ Implemented Features:
 - Send Message Button
 - Chat Window Layout
 
-Status: ⏳ In Progress
-
+Status: ✅ Completed
+```
+---
 
 # ⏳ Step 5: Real-Time Chat (WebSocket)
 
-Implemented Features:
+Planned Features:
 - Django Channels setup
 - WebSocket Connection
 - Real-time Message Sending
@@ -207,11 +206,11 @@ Main Files:
 - routing.py
 - asgi.py
 
-Status: ⏳ Planned
+Status: ⏳ In Progress
 
 # ⏳ Step 6: Chat API (DRF)
 
-Implemented Features:
+Planned Features:
 - Message API
 - Room API
 - User-based message filtering
@@ -226,7 +225,7 @@ Status: ⏳ Planned
 
 # ⏳ Step 7: Online / Offline Status
 
-Implemented Features:
+Planned Features:
 - Track active users
 - Online / Offline status
 - Last seen feature

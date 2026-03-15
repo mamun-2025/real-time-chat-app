@@ -13,7 +13,7 @@ def signup_view(request):
          user = form.save()
          login(request, user)
          messages.success(request, 'Sign up successfully!')
-         return redirect('chat_room')
+         return redirect('room_list')
       else:
          messages.error(request, 'Sign up failed. Please check form errors.')
    else:
@@ -32,7 +32,7 @@ def login_view(request):
          if user is not None:
             login(request, user)
             messages.success(request, f"Welcome back, {username}!")
-            return redirect('chat_room')
+            return redirect('room_list')
          else:
             messages.error(request, 'Invalid username or password. Please try again.')
       else:
