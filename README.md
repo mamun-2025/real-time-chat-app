@@ -209,8 +209,25 @@ Main Files:
 - asgi.py
 
 Status: ✅ Completed
+
+# ⏳ Step 6: Database Upgrade
+
+Implemented Features:
+- PostgreSQL Integration
+- Environment Variables (.env)
+
+Status: ✅ Completed
 ```
 ---
+
+# ⏳ Step 7: Online / Offline Status
+
+Planned Features:
+- Track active users
+- Online / Offline status
+- Last seen feature
+
+Status: ⏳ In Progress
 
 # ⏳ Step 6: Chat API (DRF)
 
@@ -224,23 +241,6 @@ Example APIs:
 - GET /api/messages/
 - POST /api/messages/
 - GET /api/rooms/
-
-Status: ⏳ In Progress
-
-# ⏳ Step 7: Online / Offline Status
-
-Planned Features:
-- Track active users
-- Online / Offline status
-- Last seen feature
-
-Status: ⏳ Planned
-
-# ⏳ Step 8: Database Upgrade
-
-Planned Features:
-- PostgreSQL Integration
-- Environment Variables (.env)
 
 Status: ⏳ Planned
 

@@ -6,4 +6,5 @@ __pychache__/
 *.db
 *.sqlite3
 venv/
+.env
 
