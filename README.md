@@ -75,7 +75,9 @@ chat-app/
 │   │
 │   ├── templates/
 │   │   └── chat/
-│   │       └── chat_room.html
+│   │       ├── chat_room.html
+│   │       ├── private_chat.html
+│   │       └── room_list.html
 │   │
 │   ├── models.py
 │   ├── consumers.py
@@ -97,7 +99,8 @@ chat-app/
 │   ├── css/
 │   │   └── output.css
 │   └── js/
-│       └── chat.js
+│       ├── chat.js
+│       └── private_chat.js
 │
 ├── tailwind.config.js
 ├── package.json
@@ -190,23 +193,24 @@ Implemented Features:
 - Chat Window Layout
 
 Status: ✅ Completed
-```
----
 
 # ⏳ Step 5: Real-Time Chat (WebSocket)
 
-Planned Features:
+Implemented Features:
 - Django Channels setup
 - WebSocket Connection
 - Real-time Message Sending
 - Real-time Message Receiving
+- private chat
 
 Main Files:
 - consumers.py
 - routing.py
 - asgi.py
 
-Status: ⏳ In Progress
+Status: ✅ Completed
+```
+---
 
 # ⏳ Step 6: Chat API (DRF)
 
@@ -221,7 +225,7 @@ Example APIs:
 - POST /api/messages/
 - GET /api/rooms/
 
-Status: ⏳ Planned
+Status: ⏳ In Progress
 
 # ⏳ Step 7: Online / Offline Status
 
