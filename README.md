@@ -246,21 +246,19 @@ Implemented Features:
 - Last seen feature
 
 Status: ✅ Completed
-```
----
 
 # Step 8: Enhancing User Experience (UX)
 
-Planned Features:
+Implemented Features:
 - Typing Indicators (Real-time)
 - Message Seen/Unseen Status
 - Notifications sounds on new messages
 
-Status: ⏳ In Progress
+Status: ✅ Completed
 
 # ⏳ Step 9: Chat API (DRF)
 
-Planned Features:
+Implemented Features:
 - Message API
 - Room API
 - User-based message filtering
@@ -271,7 +269,9 @@ Example APIs:
 - POST /api/messages/
 - GET /api/rooms/
 
-Status: ⏳ Planned
+Status: ✅ Completed
+```
+---
 
 # ⏳ Step 10: Deployment (Render)
 
