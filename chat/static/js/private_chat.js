@@ -25,7 +25,8 @@ chatSocket.onopen = function(e) {
 
 chatSocket.onmessage = function(e) {
     const data = JSON.parse(e.data);
-    // Online/Offline status Handle
+
+    //1.Online/Offline status Handle
     if (data.type === 'user_online'){
         const statusText = document.querySelector('#user_online_status_text');
         const statusDot = document.querySelector('#online-status-indicator');
@@ -39,38 +40,75 @@ chatSocket.onmessage = function(e) {
                 statusDot.classList.replace('bg-green-500', 'bg-gray-400');
             }
         }
+        return;
     }
-    // Typing status handle 
-    else if (data.type == 'typing_status') {
+
+    //2.Typing status handle 
+    if (data.type === 'typing_status') {
         if (data.username === otherUsername) {
-            if (data.typing) {
-                typingIndicator.textContent = `${otherUsername} is typing...`;           
-            } else {
-                typingIndicator.textContent = '';
+                typingIndicator.textContent = data.typing ? `${otherUsername} is typing...` : '';           
             }
+            return;
         }
+
+    //3.Seen Status Handle 
+    if (data.type === 'seen_status') {
+        if (data.reader === otherUsername) {
+            const allTicks = document.querySelectorAll('.tick-mark');
+            allTicks.forEach(tick => {
+                tick.classList.remove('text-gray-400');
+                tick.classList.add('text-blue-500');
+                tick.innerHTML = '✔✔';
+            });
+        }
+        return;
     }
-    // Message Received Handle 
-    else {
+
+    //4. Message Received Handle 
+    if (data.message !== undefined && data.message !== null) {
         const isMe = data.sender === myUsername; 
+
         if (!isMe && notificationsound) {
             notificationsound.play().catch(error => console.log("Sound error:", error));
+
+            if (document.hasFocus()) {
+                chatSocket.send(JSON.stringify({'type': 'mark_as_read'}));
+            }
         }
+
         const alignment = isMe ? 'justify-end' : 'justify-start';
-        const bgColor = isMe ? 'bg-blue-600 text-white' : 'bg-white border text-gray-800';
+        const bgColor = isMe ? 'bg-rose-700 text-white' : 'bg-white border text-gray-800';
         const rounded = isMe ? 'rounded-l-lg rounded-tr-lg' : 'rounded-r-lg rounded-tl-lg';
+
+        let tickClass = data.is_read ? 'text-blue-500' : 'text-gray-400';
+        let tickIcon = data.is_read ? '✔✔' : '✔';
+        const tickHtml = isMe ? `<span class="tick-mark ${tickClass} text-[10px] ml-1">${tickIcon}</span>` : '';
 
         const html = `
             <div class="flex ${alignment}">
                 <div class="max-w-[70%] px-4 py-2 rounded-2xl shadow-sm ${bgColor} ${rounded}">
-                    <p class="text-sm">${data.message}</p>
+                    <p class="text-sm">${data.message} ${tickHtml}</p>
                 </div>
             </div>`;
         
         chatMessages.innerHTML += html;
-        chatMessages.scrollTop = chatMessages.scrollHeight;
+        scrollToBottom();
     }  
 };
+
+window.addEventListener('focus', function() {
+    if (chatSocket.readyState === WebSocket.OPEN) {
+        chatSocket.send(JSON.stringify({
+            'type': 'mark_as_read'
+        }));
+    }
+});
+
+function scrollToBottom() {
+    chatMessages.scrollTop = chatMessages.scrollHeight;
+}
+
+
 
 
 
@@ -94,6 +132,8 @@ if (messageInput) {
         }, 3000);
     });
 }
+
+
 
 
 

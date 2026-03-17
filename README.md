@@ -21,9 +21,6 @@ The goal of this project is to learn and implement.
 - Typing indicator
 - Message Seen/Unseen
 - Notification
-- Media sharing
-- Emoji Support
-- Profile Customization 
 - Django REST Framework APIs 
 - JWT Authentication 
 - Deployment 
@@ -258,9 +255,6 @@ Planned Features:
 - Typing Indicators (Real-time)
 - Message Seen/Unseen Status
 - Notifications sounds on new messages
-- Media Sharing
-- Emoji Support
-- Profile Customaization
 
 Status: ⏳ In Progress
 
@@ -294,10 +288,13 @@ Status: ⏳ Planned
 # ⭐ Future Improvements
 
 - Planned Features:
+- Media Sharing
+- Emoji Support
 - Infinite Scrolling/Pagination
 - Voice & Video Calls
 - Push Notifications
 - Message Search
+- Profile Customaization
 - Two-Factor Authentication
 - Block User System
 

@@ -84,8 +84,16 @@ class PrivateChatConsumer(AsyncWebsocketConsumer):
             self.room_group_name,
             self.channel_name 
          )
-
          await self.accept()
+
+         await self.mark_messages_as_read()
+         await self.channel_layer.group_send(
+            self.room_group_name,
+            {
+               'type': 'message_read_handler',
+               'reader': self.me.username 
+            }
+         )
 
          await self.channel_layer.group_send(
             self.room_group_name,
@@ -116,21 +124,14 @@ class PrivateChatConsumer(AsyncWebsocketConsumer):
       )
 
 
-   # Status Broadcast Send Handler
-   async def status_broadcast(self, event):
+
+   async def message_read_handler(self, event):
       await self.send(text_data=json.dumps({
-         'type': 'user_online',
-         'username': event['username'],
-         'status': event['status']
+         'type': 'messages_read_update',
+         'reader': event['reader']
       }))
 
 
-   # Message Send Handler
-   async def chat_message(self, event):
-      await self.send(text_data=json.dumps({
-         'message': event['message'],
-         'sender': event['sender']
-      }))
 
 
    # Message Receive Handler
@@ -147,6 +148,18 @@ class PrivateChatConsumer(AsyncWebsocketConsumer):
                'username': self.me.username 
             }
          )
+
+      elif data.get('type') == 'mark_as_read':
+         await self.mark_messages_as_read()
+         await self.channel_layer.group_send(
+            self.room_group_name,
+            {
+               'type': 'messages_read_update',
+               'reader': self.me.username 
+            }
+         )
+
+      # Message Send Handler
       elif 'message' in data:
          message = data['message']
          sender = self.me.username 
@@ -162,6 +175,8 @@ class PrivateChatConsumer(AsyncWebsocketConsumer):
             }
          )
 
+
+   # ---- Handlers Method---
    async def typing_handler(self, event):
 
       if self.me.username != event['username']:
@@ -171,11 +186,34 @@ class PrivateChatConsumer(AsyncWebsocketConsumer):
             'username': event['username']
          }))
          
+   async def messages_read_update(self, event):
+      await self.send(text_data=json.dumps({
+         'type': 'seen_status',
+         'reader': event['reader']
+      }))
+
+   # Status Broadcast Send Handler
+   async def status_broadcast(self, event):
+      await self.send(text_data=json.dumps({
+         'type': 'user_online',
+         'username': event['username'],
+         'status': event['status']
+      }))
+
+
+   # Message Send Handler
+   async def chat_message(self, event):
+      await self.send(text_data=json.dumps({
+         'message': event['message'],
+         'sender': event['sender']
+      }))
+
+   
 
 
 
 
-
+   # ---- Database Methods----
    @database_sync_to_async
    def user_online_status_db(self, is_online):
       profile, created = UserProfile.objects.get_or_create(user=self.me)
@@ -184,8 +222,6 @@ class PrivateChatConsumer(AsyncWebsocketConsumer):
          profile.last_seen = timezone.now()
       profile.save()
    
-
-
 
    @database_sync_to_async
    def save_private_message(self, message):
@@ -196,4 +232,15 @@ class PrivateChatConsumer(AsyncWebsocketConsumer):
          receiver=other_user,
          content=message
       )
+   
+   @database_sync_to_async
+   def mark_messages_as_read(self):
+      from .models import PrivateMessage
+      other_user = User.objects.get(username=self.other_username)
+
+      return PrivateMessage.objects.filter(
+         sender=other_user,
+         receiver=self.me,
+         is_read=False 
+      ).update(is_read=True)
    
