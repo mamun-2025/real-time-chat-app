@@ -9,6 +9,7 @@ from .models import UserProfile
 from django.utils import timezone
 
 
+# Group Chat Consumer for public chat rooms
 class ChatConsumer(AsyncWebsocketConsumer):
    async def connect(self):
       self.room_name = self.scope['url_route']['kwargs']['room_name']
@@ -44,6 +45,8 @@ class ChatConsumer(AsyncWebsocketConsumer):
          }
       )
 
+
+
    async def chat_message(self, event):
       await self.send(text_data=json.dumps({
          'message': event['message'],
@@ -59,6 +62,11 @@ class ChatConsumer(AsyncWebsocketConsumer):
       
 
    
+
+
+
+
+# Private Chat Consumer for 1-to-1 chat between users
 class PrivateChatConsumer(AsyncWebsocketConsumer):
    async def connect(self):
       self.me = self.scope['user']
@@ -128,21 +136,45 @@ class PrivateChatConsumer(AsyncWebsocketConsumer):
    # Message Receive Handler
    async def receive(self, text_data):
       data = json.loads(text_data)
-      message = data['message']
-      sender = data['sender']
 
-      sender = self.me.username 
+      # Hadnle Typing Status Send
+      if data.get('type') == 'typing_status':
+         await self.channel_layer.group_send(
+            self.room_group_name,
+            {
+               'type': 'typing_handler',
+               'typing': data['typing'],
+               'username': self.me.username 
+            }
+         )
+      elif 'message' in data:
+         message = data['message']
+         sender = self.me.username 
 
-      await self.save_private_message(message)
+         await self.save_private_message(message)
 
-      await self.channel_layer.group_send(
-         self.room_group_name,
-         {
-            'type': 'chat_message',
-            'message': message,
-            'sender': sender
-         }
-      )
+         await self.channel_layer.group_send(
+            self.room_group_name,
+            {
+               'type': 'chat_message',
+               'message': message,
+               'sender': sender
+            }
+         )
+
+   async def typing_handler(self, event):
+
+      if self.me.username != event['username']:
+         await self.send(text_data=json.dumps({
+            'type': 'typing_status',
+            'typing': event['typing'],
+            'username': event['username']
+         }))
+         
+
+
+
+
 
    @database_sync_to_async
    def user_online_status_db(self, is_online):

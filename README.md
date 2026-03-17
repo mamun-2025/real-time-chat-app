@@ -15,9 +15,15 @@ The goal of this project is to learn and implement.
 - Chat Room System
 - Authentication System
 - Message CRUD System
+- PostgreSQL Database Integration
 - Docker Desktop install & Redis setup
-- Online/Offline User Status
-- PostgreSQL Database Integration 
+- Online/Offline User Status 
+- Typing indicator
+- Message Seen/Unseen
+- Notification
+- Media sharing
+- Emoji Support
+- Profile Customization 
 - Django REST Framework APIs 
 - JWT Authentication 
 - Deployment 
@@ -103,6 +109,8 @@ chat-app/
 │   └── js/
 │       ├── chat.js
 │       └── private_chat.js
+│   ├── audio/
+│        └── notify.mp3
 │
 ├── tailwind.config.js
 ├── package.json
@@ -244,7 +252,19 @@ Status: ✅ Completed
 ```
 ---
 
-# ⏳ Step 6: Chat API (DRF)
+# Step 8: Enhancing User Experience (UX)
+
+Planned Features:
+- Typing Indicators (Real-time)
+- Message Seen/Unseen Status
+- Notifications sounds on new messages
+- Media Sharing
+- Emoji Support
+- Profile Customaization
+
+Status: ⏳ In Progress
+
+# ⏳ Step 9: Chat API (DRF)
 
 Planned Features:
 - Message API
@@ -257,9 +277,9 @@ Example APIs:
 - POST /api/messages/
 - GET /api/rooms/
 
-Status: ⏳ In Progress
+Status: ⏳ Planned
 
-# ⏳ Step 9: Deployment (Render)
+# ⏳ Step 10: Deployment (Render)
 
 Deployment Steps:
 - GitHub Repository Push
@@ -274,12 +294,12 @@ Status: ⏳ Planned
 # ⭐ Future Improvements
 
 - Planned Features:
-- Typing Indicator
-- Message Seen Status
-- Group Chat
-- File Sharing
-- Emoji Support
-- Notifications
+- Infinite Scrolling/Pagination
+- Voice & Video Calls
+- Push Notifications
+- Message Search
+- Two-Factor Authentication
+- Block User System
 
 ---
 

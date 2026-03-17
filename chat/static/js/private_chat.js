@@ -12,15 +12,20 @@ const chatSocket = new WebSocket(
 );
 
 const chatMessages = document.querySelector('#chat-messages');
+const messageInput = document.querySelector('#message-input');
+const typingIndicator = document.querySelector('#typing-indicator');
+const notificationsound = document.getElementById('notification-sound');
+let typingTimeout;
 
 chatSocket.onopen = function(e) {
     console.log("Private Chat Connected!");
     chatMessages.scrollTop = chatMessages.scrollHeight;
 }
 
+
 chatSocket.onmessage = function(e) {
     const data = JSON.parse(e.data);
-
+    // Online/Offline status Handle
     if (data.type === 'user_online'){
         const statusText = document.querySelector('#user_online_status_text');
         const statusDot = document.querySelector('#online-status-indicator');
@@ -34,9 +39,23 @@ chatSocket.onmessage = function(e) {
                 statusDot.classList.replace('bg-green-500', 'bg-gray-400');
             }
         }
-    } else {
-        // মেসেজ বাবল তৈরি
+    }
+    // Typing status handle 
+    else if (data.type == 'typing_status') {
+        if (data.username === otherUsername) {
+            if (data.typing) {
+                typingIndicator.textContent = `${otherUsername} is typing...`;           
+            } else {
+                typingIndicator.textContent = '';
+            }
+        }
+    }
+    // Message Received Handle 
+    else {
         const isMe = data.sender === myUsername; 
+        if (!isMe && notificationsound) {
+            notificationsound.play().catch(error => console.log("Sound error:", error));
+        }
         const alignment = isMe ? 'justify-end' : 'justify-start';
         const bgColor = isMe ? 'bg-blue-600 text-white' : 'bg-white border text-gray-800';
         const rounded = isMe ? 'rounded-l-lg rounded-tr-lg' : 'rounded-r-lg rounded-tl-lg';
@@ -50,22 +69,53 @@ chatSocket.onmessage = function(e) {
         
         chatMessages.innerHTML += html;
         chatMessages.scrollTop = chatMessages.scrollHeight;
-    }
-    
+    }  
 };
 
 
+
+// Typing status send handle
+if (messageInput) {
+    messageInput.addEventListener('input', function() {
+        chatSocket.send(JSON.stringify({
+            'type': 'typing_status',
+            'typing': true,
+            'username': myUsername
+        }));
+
+// Stop typing status after 3 seconds of inactivity 
+        clearTimeout(typingTimeout);
+        typingTimer = setTimeout(function() {
+            chatSocket.send(JSON.stringify({
+                'type': 'typing_status',
+                'typing': false,
+                'username': myUsername
+            }));
+        }, 3000);
+    });
+}
+
+
+
+
+    // Message send handle
 document.querySelector('#chat-form').onsubmit = function(e) {
-    e.preventDefault();
-    const messageInput = document.querySelector('#message-input');
-    const message = messageInput.value.trim();
+        e.preventDefault();
+        const message = messageInput.value.trim();
+        if (message) {
+            chatSocket.send(JSON.stringify({
+                'message': message,
+                'sender': myUsername 
+            }));
+        messageInput.value = '';
 
-    chatSocket.send(JSON.stringify({
-        'message': message,
-        'sender': myUsername // এখানে আপনার ইউজারনেম যাচ্ছে
-    }));
-
-    messageInput.value = '';
+        // typing status off after sending message 
+        chatSocket.send(JSON.stringify({
+            'type': 'typing_status',
+            'typing': false,
+            'username': myUsername 
+        }));
+    }
 };
 
 chatSocket.onclose = function(e) {
