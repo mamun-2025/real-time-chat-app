@@ -13,7 +13,7 @@
             <span>Friends</span>
             <span class="text-xs bg-green-500 px-2 py-1 rounded-full text-white">Online</span>
          </div>
-         <div class="divide-y divide-gray-100 overflow-auto h-[400px]">
+         <div class="divide-y divide-gray-100 overflow-auto h-[450px]">
             {% for user in users %}
                <a href="{% url 'private_chat' user.username %}" class="flex items-center p-4 hover:bg-blue-50 transition">
                   <div class="flex items-center">
@@ -44,9 +44,13 @@
                   <h3 class="font-bold text-lg text-gray-800 mb-4">{{ room.name }}</h3>
                   <a href="{% url 'chat_room' room.name %}" class="inline-block bg-rose-600 hover:bg-rose-700 rounded-lg px-4 py-2 text-sm text-white transition">Join Room</a>
                </div>
+            {% empty %}
+               <div class="col-span-2 text-center py-10">
+                  <p class="text-gray-400">No rooms available at the moment.</p>
+               </div>
             {% endfor %}
          </div>
       </div>
-
+   </div>
 </div>
 {% endblock %}

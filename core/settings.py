@@ -31,6 +31,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.humanize',
     'chat',
     'accounts',
 ]
@@ -68,7 +69,10 @@ ASGI_APPLICATION = 'core.asgi.application'
 # Message Transfer Protocl (Chennels)
 CHANNEL_LAYERS = {
    'default': {
-      'BACKEND': 'channels.layers.InMemoryChannelLayer',
+      'BACKEND': 'channels_redis.core.RedisChannelLayer',
+      'CONFIG': {
+         'hosts': [('localhost', 6379)],
+      },
    },
 }
 

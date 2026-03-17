@@ -20,21 +20,38 @@ chatSocket.onopen = function(e) {
 
 chatSocket.onmessage = function(e) {
     const data = JSON.parse(e.data);
-    // মেসেজ বাবল তৈরি
-    const isMe = data.sender === myUsername; 
-    const alignment = isMe ? 'justify-end' : 'justify-start';
-    const bgColor = isMe ? 'bg-blue-600 text-white' : 'bg-white border text-gray-800';
-    const rounded = isMe ? 'rounded-l-lg rounded-tr-lg' : 'rounded-r-lg rounded-tl-lg';
 
-    const html = `
-        <div class="flex ${alignment}">
-            <div class="max-w-[70%] px-4 py-2 rounded-2xl shadow-sm ${bgColor} ${rounded}">
-                <p class="text-sm">${data.message}</p>
-            </div>
-        </div>`;
+    if (data.type === 'user_online'){
+        const statusText = document.querySelector('#user_online_status_text');
+        const statusDot = document.querySelector('#online-status-indicator');
+        
+       if (data.username === otherUsername) {
+            if (data.status === 'online') {
+                statusText.textContent = 'Online';
+                statusDot.classList.replace('bg-gray-400', 'bg-green-500');
+            } else {
+                statusText.textContent = 'Offline'; 
+                statusDot.classList.replace('bg-green-500', 'bg-gray-400');
+            }
+        }
+    } else {
+        // মেসেজ বাবল তৈরি
+        const isMe = data.sender === myUsername; 
+        const alignment = isMe ? 'justify-end' : 'justify-start';
+        const bgColor = isMe ? 'bg-blue-600 text-white' : 'bg-white border text-gray-800';
+        const rounded = isMe ? 'rounded-l-lg rounded-tr-lg' : 'rounded-r-lg rounded-tl-lg';
+
+        const html = `
+            <div class="flex ${alignment}">
+                <div class="max-w-[70%] px-4 py-2 rounded-2xl shadow-sm ${bgColor} ${rounded}">
+                    <p class="text-sm">${data.message}</p>
+                </div>
+            </div>`;
+        
+        chatMessages.innerHTML += html;
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+    }
     
-    chatMessages.innerHTML += html;
-    chatMessages.scrollTop = chatMessages.scrollHeight;
 };
 
 

@@ -15,6 +15,7 @@ The goal of this project is to learn and implement.
 - Chat Room System
 - Authentication System
 - Message CRUD System
+- Docker Desktop install & Redis setup
 - Online/Offline User Status
 - PostgreSQL Database Integration 
 - Django REST Framework APIs 
@@ -29,6 +30,7 @@ Backend:
 - Python 
 - Django
 - Django Channels 
+- Redis (Message Broker)
 - Django REST Framework 
 - JWT Authentication(SimpleJWT)
 
@@ -137,6 +139,19 @@ python manage.py runserver
 
 ---
 
+# 🛠️ Redis Setup (Mandatory)
+Before running the server, ensure the following:
+1. Docker Desktop: 
+   Must be installed and running on your PC.
+2. Redis Library & Run Redis:
+```bash
+pip install channels-redis
+docker run --name my-chat-redis -p 6379:6379 -d redis
+
+```
+
+---
+
 # 🎯 Development Progress
 
 ✅ Step 1: Project Setup
@@ -217,17 +232,17 @@ Implemented Features:
 - Environment Variables (.env)
 
 Status: ✅ Completed
-```
----
 
-# ⏳ Step 7: Online / Offline Status
+# ⏳ Step 7: Online / Offline Status with Redis & Docker
 
-Planned Features:
-- Track active users
-- Online / Offline status
+Implemented Features:
+- Used Redis as Channel Layer for User status tracking
+- Online / Offline Tracking
 - Last seen feature
 
-Status: ⏳ In Progress
+Status: ✅ Completed
+```
+---
 
 # ⏳ Step 6: Chat API (DRF)
 
@@ -242,7 +257,7 @@ Example APIs:
 - POST /api/messages/
 - GET /api/rooms/
 
-Status: ⏳ Planned
+Status: ⏳ In Progress
 
 # ⏳ Step 9: Deployment (Render)
 
