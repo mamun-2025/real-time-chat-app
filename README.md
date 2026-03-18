@@ -300,6 +300,16 @@ Status: ✅ Completed
 
 ---
 
+# 📸 Chatting Screenshots
+
+![Chatting Screenshot](screeshots/private_chat.png)
+
+
+# 🌐 Live Demo (Real-time-chat-application)
+
+[![Live Demo](https://img.shields.io/badge/Live-Demo-brightgreen)](https://real-time-chat-app-yipe.onrender.com)
+
+
 👨‍💻 Author
 
 - Mamun Bepari
