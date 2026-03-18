@@ -3,6 +3,7 @@ import os
 from pathlib import Path
 from dotenv import load_dotenv
 from datetime import timedelta
+import dj_database_url
 
 load_dotenv()  # Load environment variables from .env file
 
@@ -19,7 +20,7 @@ SECRET_KEY = os.getenv('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.getenv('DEBUG', 'False') == 'True'
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', 'localhost,127.0.0.1,.onrender.com').split(',')
 
 
 # Application definition
@@ -52,6 +53,7 @@ REST_FRAMEWORK = {
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -59,6 +61,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 ROOT_URLCONF = 'core.urls'
 
@@ -85,13 +88,13 @@ CHANNEL_LAYERS = {
    'default': {
       'BACKEND': 'channels_redis.core.RedisChannelLayer',
       'CONFIG': {
-         'hosts': [('localhost', 6379)],
+         'hosts': [os.getenv('REDIS_URL', 'redis://127.0.0.1:6379')],
       },
    },
 }
 
 
-# Database
+# Database configuration
 # Sqlite3 is used for development and testing. For production, consider using PostgreSQL.
 # DATABASES = {
 #     'default': {
@@ -99,16 +102,28 @@ CHANNEL_LAYERS = {
 #         'NAME': BASE_DIR / 'db.sqlite3',
 #     }
 # }
+
+# For production, use PostgreSQL with environment variables for security
+# DATABASES = {
+#    'default': {
+#       'ENGINE': 'django.db.backends.postgresql',
+#       'NAME': os.getenv('DB_NAME'),
+#       'USER': os.getenv('DB_USER'),
+#       'PASSWORD': os.getenv('DB_PASSWORD'),
+#       'HOST': os.getenv('DB_HOST'),
+#       'PORT': os.getenv('DB_PORT'),
+#    }
+# }
+
+# Use dj_database_url for neon production database configuration
 DATABASES = {
-   'default': {
-      'ENGINE': 'django.db.backends.postgresql',
-      'NAME': os.getenv('DB_NAME'),
-      'USER': os.getenv('DB_USER'),
-      'PASSWORD': os.getenv('DB_PASSWORD'),
-      'HOST': os.getenv('DB_HOST'),
-      'PORT': os.getenv('DB_PORT'),
-   }
+   'default': dj_database_url.config(
+      default=os.getenv('DATABASE_URL'),
+      conn_max_age=600,
+      ssl_require=True
+   )
 }
+
 
 SIMPLE_JWT = {
    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=60),
@@ -151,6 +166,7 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 
 STATIC_URL = 'static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATICFILES_DIRS = [
    BASE_DIR / 'chat' / 'static',
 ]
