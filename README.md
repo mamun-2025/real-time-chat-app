@@ -270,7 +270,7 @@ Example APIs:
 - GET /api/rooms/
 
 Status: ✅ Completed
-```
+
 ---
 
 # ⏳ Step 10: Deployment (Render)
@@ -281,8 +281,8 @@ Deployment Steps:
 - PostgreSQL Database
 - Render Deployment
 
-Status: ⏳ Planned
-
+Status: ✅ Completed
+```
 ---
 
 # ⭐ Future Improvements

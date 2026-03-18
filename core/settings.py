@@ -177,3 +177,14 @@ LOGIN_URL = 'login'
 LOGIN_REDIRECT_URL = '/chat/'
 LOGOUT_REDIRECT_URL = 'login'
 
+
+# CSRF Trusted Origins (Production Needed)
+CSRF_TRUSTED_ORIGINS = [
+    'https://*.onrender.com',
+    'https://real-time-chat-app-yipe.onrender.com', 
+]
+
+# Security settings for production
+CSRF_COOKIE_SECURE = True
+SESSION_COOKIE_SECURE = True
+CSRF_COOKIE_HTTPONLY = True
